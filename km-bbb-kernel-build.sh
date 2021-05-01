@@ -182,8 +182,8 @@ else
                 x=$(($x-1))
                 sleep 1
         done
-	echo "${Purple}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- omap2plus_defconfig${NC}"
-	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- omap2plus_defconfig
+	echo "${Purple}make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- km-bbb-am335x_defconfig${NC}"
+	make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- km-bbb-am335x_defconfig
         if [ -f .config ] ; then
                 echo "${Green}Kernel Configuration has done successfully"
         else
