@@ -34,6 +34,13 @@
 };
 
 &am33xx_pinmux {
+        gpio_pins: pinmux_gpio_pins {
+		pinctrl-single,pins = <
+                        AM33XX_IOPAD(0x8D4, MUX_MODE7)       /* lcd_data13.gpio0_9 - Buzzer */
+                        AM33XX_IOPAD(0x8D8, MUX_MODE7)       /* lcd_data14.gpio0_10 - RED LED*/
+                        AM33XX_IOPAD(0x8DC, PIN_INPUT_PULLDOWN | MUX_MODE7)    /* lcd_data15.gpio0_11 - Enter Switch*/
+                >;
+        };
         uart0_pins: pinmux_uart0_pins {
                 pinctrl-single,pins = <
                         AM33XX_IOPAD(0x970, PIN_INPUT_PULLUP | MUX_MODE0)       /* uart0_rxd.uart0_rxd */
@@ -70,7 +77,8 @@
 
 &uart0 {
         pinctrl-names = "default";
-        pinctrl-0 = <&uart0_pins>;
+        pinctrl-1 = <&uart0_pins>;
+        pinctrl-0 = <&gpio_pins>;
 
         status = "okay";
 };
