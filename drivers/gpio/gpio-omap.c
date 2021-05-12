@@ -31,6 +31,8 @@
 #define OFF_MODE	1
 #define OMAP4_GPIO_DEBOUNCINGTIME_MASK 0xFF
 
+#define KM_DEBUG
+
 static LIST_HEAD(omap_gpio_list);
 
 struct gpio_regs {
@@ -1243,6 +1245,10 @@ static int omap_gpio_probe(struct platform_device *pdev)
 	struct irq_chip *irqc;
 	int ret;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	match = of_match_device(of_match_ptr(omap_gpio_match), dev);
 
 	pdata = match ? match->data : dev_get_platdata(dev);
@@ -1357,6 +1363,9 @@ static int omap_gpio_probe(struct platform_device *pdev)
 
 	list_add_tail(&bank->node, &omap_gpio_list);
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 	return 0;
 }
 
@@ -1759,12 +1768,18 @@ static struct platform_driver omap_gpio_driver = {
  */
 static int __init omap_gpio_drv_reg(void)
 {
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 	return platform_driver_register(&omap_gpio_driver);
 }
 postcore_initcall(omap_gpio_drv_reg);
 
 static void __exit omap_gpio_exit(void)
 {
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 	platform_driver_unregister(&omap_gpio_driver);
 }
 module_exit(omap_gpio_exit);
