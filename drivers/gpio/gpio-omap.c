@@ -105,6 +105,10 @@ static void omap_set_gpio_direction(struct gpio_bank *bank, int gpio,
 	void __iomem *reg = bank->base;
 	u32 l;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	reg += bank->regs->direction;
 	l = readl_relaxed(reg);
 	if (is_input)
@@ -113,7 +117,12 @@ static void omap_set_gpio_direction(struct gpio_bank *bank, int gpio,
 		l &= ~(BIT(gpio));
 	writel_relaxed(l, reg);
 	bank->context.oe = l;
+
+	#ifdef KM_DEBUG
+	printk("%p:%d\n",reg,l);
+	#endif
 }
+
 
 
 /* set data out value using dedicate set/clear register */
@@ -693,6 +702,10 @@ static int omap_gpio_request(struct gpio_chip *chip, unsigned offset)
 	struct gpio_bank *bank = gpiochip_get_data(chip);
 	unsigned long flags;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	/*
 	 * If this is the first gpio_request for the bank,
 	 * enable the bank module.
@@ -984,11 +997,20 @@ static int omap_gpio_get_direction(struct gpio_chip *chip, unsigned offset)
 	void __iomem *reg;
 	int dir;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	bank = gpiochip_get_data(chip);
 	reg = bank->base + bank->regs->direction;
 	raw_spin_lock_irqsave(&bank->lock, flags);
 	dir = !!(readl_relaxed(reg) & BIT(offset));
 	raw_spin_unlock_irqrestore(&bank->lock, flags);
+
+	#ifdef KM_DEBUG
+	printk("dir:%d\n",dir);
+	#endif
+
 	return dir;
 }
 
@@ -996,6 +1018,10 @@ static int omap_gpio_input(struct gpio_chip *chip, unsigned offset)
 {
 	struct gpio_bank *bank;
 	unsigned long flags;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	bank = gpiochip_get_data(chip);
 	raw_spin_lock_irqsave(&bank->lock, flags);
@@ -1007,6 +1033,10 @@ static int omap_gpio_input(struct gpio_chip *chip, unsigned offset)
 static int omap_gpio_get(struct gpio_chip *chip, unsigned offset)
 {
 	struct gpio_bank *bank;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	bank = gpiochip_get_data(chip);
 
@@ -1020,6 +1050,10 @@ static int omap_gpio_output(struct gpio_chip *chip, unsigned offset, int value)
 {
 	struct gpio_bank *bank;
 	unsigned long flags;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	bank = gpiochip_get_data(chip);
 	raw_spin_lock_irqsave(&bank->lock, flags);
@@ -1086,6 +1120,10 @@ static void omap_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
 {
 	struct gpio_bank *bank;
 	unsigned long flags;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	bank = gpiochip_get_data(chip);
 	raw_spin_lock_irqsave(&bank->lock, flags);

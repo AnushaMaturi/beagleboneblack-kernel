@@ -8,7 +8,9 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&user_leds_s0>;
 
-		compatible = "gpio-leds";
+	/*	compatible = "gpio-leds";     */
+		compatible = "abc-leds";
+
 
 		led2 {
 			label = "beaglebone:green:usr0";

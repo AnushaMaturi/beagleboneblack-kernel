@@ -33,6 +33,8 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/gpio.h>
 
+#define  KM_DEBUG
+
 /* Implementation infrastructure for GPIO interfaces.
  *
  * The GPIO programming interface allows for inlining speed-critical
@@ -2297,6 +2299,10 @@ static int gpiod_request_commit(struct gpio_desc *desc, const char *label)
 	unsigned long		flags;
 	unsigned		offset;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	if (label) {
 		label = kstrdup_const(label, GFP_KERNEL);
 		if (!label)
@@ -2388,6 +2394,10 @@ int gpiod_request(struct gpio_desc *desc, const char *label)
 {
 	int status = -EPROBE_DEFER;
 	struct gpio_device *gdev;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	VALIDATE_DESC(desc);
 	gdev = desc->gdev;
@@ -2551,6 +2561,10 @@ int gpiod_direction_input(struct gpio_desc *desc)
 	struct gpio_chip	*chip;
 	int			status = 0;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	VALIDATE_DESC(desc);
 	chip = desc->gdev->chip;
 
@@ -2592,6 +2606,10 @@ static int gpiod_direction_output_raw_commit(struct gpio_desc *desc, int value)
 	struct gpio_chip *gc = desc->gdev->chip;
 	int val = !!value;
 	int ret = 0;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	if (!gc->set && !gc->direction_output) {
 		gpiod_warn(desc,
@@ -2654,6 +2672,10 @@ int gpiod_direction_output(struct gpio_desc *desc, int value)
 {
 	struct gpio_chip *gc;
 	int ret;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	VALIDATE_DESC(desc);
 	if (test_bit(FLAG_ACTIVE_LOW, &desc->flags))
@@ -2826,6 +2848,10 @@ static int gpiod_get_raw_value_commit(const struct gpio_desc *desc)
 	int offset;
 	int value;
 
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	chip = desc->gdev->chip;
 	offset = gpio_chip_hwgpio(desc);
 	value = chip->get ? chip->get(chip, offset) : -EIO;
@@ -2949,6 +2975,10 @@ EXPORT_SYMBOL_GPL(gpiod_get_raw_value);
 int gpiod_get_value(const struct gpio_desc *desc)
 {
 	int value;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	VALIDATE_DESC(desc);
 	/* Should be using gpiod_get_value_cansleep() */
@@ -3212,6 +3242,10 @@ static void gpiod_set_value_nocheck(struct gpio_desc *desc, int value)
  */
 void gpiod_set_value(struct gpio_desc *desc, int value)
 {
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	VALIDATE_DESC_VOID(desc);
 	/* Should be using gpiod_set_value_cansleep() */
 	WARN_ON(desc->gdev->chip->can_sleep);
@@ -3307,6 +3341,10 @@ int gpiod_to_irq(const struct gpio_desc *desc)
 {
 	struct gpio_chip *chip;
 	int offset;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	/*
 	 * Cannot VALIDATE_DESC() here as gpiod_to_irq() consumer semantics
@@ -4423,6 +4461,10 @@ static int gpiolib_seq_show(struct seq_file *s, void *v)
 	struct gpio_device *gdev = v;
 	struct gpio_chip *chip = gdev->chip;
 	struct device *parent;
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	if (!chip) {
 		seq_printf(s, "%s%s: (dangling chip)", (char *)s->private,
