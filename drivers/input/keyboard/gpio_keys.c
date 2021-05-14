@@ -32,6 +32,8 @@
 #include <linux/spinlock.h>
 #include <dt-bindings/input/gpio-keys.h>
 
+#define KM_DEBUG
+
 struct gpio_button_data {
 	const struct gpio_keys_button *button;
 	struct input_dev *input;
@@ -778,6 +780,11 @@ static int gpio_keys_probe(struct platform_device *pdev)
 	int i, error;
 	int wakeup = 0;
 
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
+
 	if (!pdata) {
 		pdata = gpio_keys_get_devtree_pdata(dev);
 		if (IS_ERR(pdata))
@@ -871,6 +878,10 @@ static int gpio_keys_probe(struct platform_device *pdev)
 	}
 
 	device_init_wakeup(dev, wakeup);
+
+	#ifdef KM_DEBUG
+	printk("%s:%s:%d\n",__FILE__,__func__,__LINE__);
+	#endif
 
 	return 0;
 }

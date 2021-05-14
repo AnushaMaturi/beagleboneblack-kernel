@@ -31,6 +31,16 @@
                 regulator-max-microvolt = <3300000>;
         };
 
+        gpio-keys {
+                       compatible = "gpio-keys";
+                         autorepeat;
+                         enter {
+                                 label = "GPIO Key ENTER";
+                                 linux,code = <28>;
+                                 gpios = <&gpio0 11 0>;
+                         };
+         };
+
 };
 
 &am33xx_pinmux {
