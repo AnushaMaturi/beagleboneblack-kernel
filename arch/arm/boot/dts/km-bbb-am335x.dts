@@ -34,10 +34,23 @@
         gpio-keys {
                        compatible = "gpio-keys";
                          autorepeat;
+
                          enter {
                                  label = "GPIO Key ENTER";
                                  linux,code = <28>;
                                  gpios = <&gpio0 11 0>;
+                         };
+
+                         up {
+                                 label = "GPIO Key UP";
+                                 linux,code = <103>;
+                                 gpios = <&gpio0 26 1>;
+                         };
+
+                         down {
+                                 label = "GPIO Key down";
+                                 linux,code = <108>;
+                                 gpios = <&gpio0 27 1>;
                          };
          };
 
@@ -49,6 +62,8 @@
                         AM33XX_IOPAD(0x8D4, MUX_MODE7)       /* lcd_data13.gpio0_9 - Buzzer */
                         AM33XX_IOPAD(0x8D8, MUX_MODE7)       /* lcd_data14.gpio0_10 - RED LED*/
                         AM33XX_IOPAD(0x8DC, PIN_INPUT_PULLDOWN | MUX_MODE7)    /* lcd_data15.gpio0_11 - Enter Switch*/
+                        AM33XX_IOPAD(0x828, PIN_INPUT_PULLUP | MUX_MODE7)    /* gpmc_ad10.gpio0_26 - Up Switch*/
+                        AM33XX_IOPAD(0x82C, PIN_INPUT_PULLUP | MUX_MODE7)    /* gpmc_ad11.gpio0_27 - Down Switch*/
                 >;
         };
         uart0_pins: pinmux_uart0_pins {
