@@ -461,7 +461,7 @@ struct rtc_device *devm_rtc_allocate_device(struct device *dev)
 {
 	struct rtc_device **ptr, *rtc;
 	int id, err;
-
+        printk("%s %s %d \n",__FILE__, __func__, __LINE__);
 	id = rtc_device_get_id(dev);
 	if (id < 0)
 		return ERR_PTR(id);

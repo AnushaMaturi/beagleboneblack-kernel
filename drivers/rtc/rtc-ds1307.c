@@ -412,7 +412,7 @@ static int ds1307_get_time(struct device *dev, struct rtc_time *t)
 	int		tmp, ret;
 	const struct chip_desc *chip = &chips[ds1307->type];
 	u8 regs[7];
-
+        printk("%s %s %d \n",__FILE__, __func__, __LINE__);
 	/* read the RTC date and time registers all at once */
 	ret = regmap_bulk_read(ds1307->regmap, chip->offset, regs,
 			       sizeof(regs));
@@ -460,7 +460,7 @@ static int ds1307_set_time(struct device *dev, struct rtc_time *t)
 	int		result;
 	int		tmp;
 	u8		regs[7];
-
+        printk("%s %s %d \n",__FILE__, __func__, __LINE__);
 	dev_dbg(dev, "%s secs=%d, mins=%d, "
 		"hours=%d, mday=%d, mon=%d, year=%d, wday=%d\n",
 		"write", t->tm_sec, t->tm_min,
@@ -1399,6 +1399,7 @@ static int ds1307_probe(struct i2c_client *client,
 	struct ds1307_platform_data *pdata = dev_get_platdata(&client->dev);
 	u8			trickle_charger_setup = 0;
 
+        printk("%s %s %d \n",__FILE__, __func__, __LINE__);
 	ds1307 = devm_kzalloc(&client->dev, sizeof(struct ds1307), GFP_KERNEL);
 	if (!ds1307)
 		return -ENOMEM;
@@ -1732,6 +1733,7 @@ read_rtc:
 	ds1307_hwmon_register(ds1307);
 	ds1307_clks_register(ds1307);
 
+	printk("%s %s %d \n",__FILE__, __func__, __LINE__);
 	return 0;
 
 exit:
