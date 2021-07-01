@@ -10,7 +10,7 @@
 #include "am33xx.dtsi"
 /* For Hello World dts file disable the below .dtsi file */ 
 #include "am335x-bone-common.dtsi"
-
+#include <dt-bindings/interrupt-controller/irq.h>
 / {
 	model = "Kernel Masters BeagleBone Black Expansion Board - AM335x";
 	compatible = "ti,am335x-bone-black", "ti,am335x-bone", "ti,am33xx";
@@ -67,12 +67,18 @@
                 >;
         };
 
-//	i2c1_pins: pinmux_i2c1_pins {
-//		pinctrl-single,pins = <
-//			AM33XX_PADCONF(AM335X_PIN_SPI0_D1, PIN_INPUT_PULLUP, MUX_MODE2)	 /* spi0_d1.i2c1_sda */
-//			AM33XX_PADCONF(AM335X_PIN_SPI0_CS0, PIN_INPUT_PULLUP, MUX_MODE2) /* spi0_cs0.i2c1_scl */
-//		>;
-//	};
+	i2c1_pins: pinmux_i2c1_pins {
+		pinctrl-single,pins = <
+			AM33XX_PADCONF(AM335X_PIN_SPI0_D1, PIN_INPUT_PULLUP, MUX_MODE2)	 /* spi0_d1.i2c1_sda */
+			AM33XX_PADCONF(AM335X_PIN_SPI0_CS0, PIN_INPUT_PULLUP, MUX_MODE2) /* spi0_cs0.i2c1_scl */
+		>;
+	};
+
+        adxl_pins: pinmux_adxl_pins {
+                pinctrl-single,pins = <
+                        AM33XX_IOPAD(AM335X_PIN_GPMC_A0, SLEWCTRL_SLOW|PIN_INPUT_PULLDOWN|MUX_MODE7) /*gpmc_a0.gpio1_16(Interrupt) */
+                >;
+        };
 };
 
 &uart0 {
@@ -103,7 +109,7 @@
 
 &i2c1 {
         pinctrl-names = "default";
-        //pinctrl-0 = <&i2c1_pins>;
+        pinctrl-0 = <&i2c1_pins>;
 
         status = "okay";
         clock-frequency = <100000>;
@@ -111,5 +117,14 @@
         rtc_ds1307: rtc_ds1307@68 {
                 compatible = "dallas,ds1307";
                 reg = <0x68>;
+        };
+
+        adxl345: adxl345@53 {
+                compatible = "adi,adxl345";
+                reg = <0x53>;
+                pinctrl-names = "default";
+                pinctrl-1 = <&adxl_pins>;
+                interrupt-parent = <&gpio1>;
+                interrupts = <16 IRQ_TYPE_EDGE_RISING>;
         };
 };
