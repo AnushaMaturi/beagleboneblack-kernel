@@ -231,7 +231,7 @@ static const struct adxl34x_platform_data adxl34x_default_init = {
 
 	.ev_code_tap = {BTN_TOUCH, BTN_TOUCH, BTN_TOUCH}, /* EV_KEY {x,y,z} */
 	.power_mode = ADXL_AUTO_SLEEP | ADXL_LINK,
-	.fifo_mode = ADXL_FIFO_STREAM,
+	.fifo_mode = ADXL_FIFO_BYPASS,//ADXL_FIFO_STREAM,
 	.watermark = 0,
 };
 
@@ -661,7 +661,9 @@ static const struct attribute_group adxl34x_attr_group = {
 static int adxl34x_input_open(struct input_dev *input)
 {
 	struct adxl34x *ac = input_get_drvdata(input);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	mutex_lock(&ac->mutex);
 
 	if (!ac->suspended && !ac->disabled)
@@ -677,7 +679,9 @@ static int adxl34x_input_open(struct input_dev *input)
 static void adxl34x_input_close(struct input_dev *input)
 {
 	struct adxl34x *ac = input_get_drvdata(input);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	mutex_lock(&ac->mutex);
 
 	if (!ac->suspended && !ac->disabled)
@@ -697,7 +701,9 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
 	const struct adxl34x_platform_data *pdata;
 	int err, range, i;
 	unsigned char revid;
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	if (!irq) {
 		dev_err(dev, "no IRQ?\n");
 		err = -ENODEV;
@@ -881,7 +887,9 @@ struct adxl34x *adxl34x_probe(struct device *dev, int irq,
 	AC_WRITE(ac, INT_ENABLE, ac->int_mask | OVERRUN);
 
 	ac->pdata.power_mode &= (PCTL_AUTO_SLEEP | PCTL_LINK);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	return ac;
 
  err_remove_attr:

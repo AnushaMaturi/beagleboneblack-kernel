@@ -17,6 +17,7 @@
 #include <linux/iio/sysfs.h>
 
 #include "adxl345.h"
+#define KM_DEBUG
 
 #define ADXL345_REG_DEVID		0x00
 #define ADXL345_REG_OFSX		0x1e
@@ -218,7 +219,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
 	struct iio_dev *indio_dev;
 	u32 regval;
 	int ret;
-
+#ifdef KM_DEBUG
+	printk("%s %s %d\n", __FILE__, __func__, __LINE__);
+#endif
 	ret = regmap_read(regmap, ADXL345_REG_DEVID, &regval);
 	if (ret < 0) {
 		dev_err(dev, "Error reading device ID: %d\n", ret);
@@ -270,7 +273,9 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
 		regmap_write(data->regmap, ADXL345_REG_POWER_CTL,
 			     ADXL345_POWER_CTL_STANDBY);
 	}
-
+#ifdef KM_DEBUG
+	printk("%s %s %d\n", __FILE__, __func__, __LINE__);
+#endif
 	return ret;
 }
 EXPORT_SYMBOL_GPL(adxl345_core_probe);

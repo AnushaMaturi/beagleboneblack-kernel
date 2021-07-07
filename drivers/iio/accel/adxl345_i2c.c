@@ -16,6 +16,7 @@
 #include <linux/regmap.h>
 
 #include "adxl345.h"
+#define KM_DEBUG
 
 static const struct regmap_config adxl345_i2c_regmap_config = {
 	.reg_bits = 8,
@@ -26,7 +27,9 @@ static int adxl345_i2c_probe(struct i2c_client *client,
 			     const struct i2c_device_id *id)
 {
 	struct regmap *regmap;
-
+#ifdef KM_DEBUG
+	printk("%s %s %d\n", __FILE__, __func__, __LINE__);
+#endif
 	regmap = devm_regmap_init_i2c(client, &adxl345_i2c_regmap_config);
 	if (IS_ERR(regmap)) {
 		dev_err(&client->dev, "Error initializing i2c regmap: %ld\n",

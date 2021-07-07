@@ -15,10 +15,13 @@
 #include <linux/pm.h>
 #include "adxl34x.h"
 
+//#define KM_DEBUG
 static int adxl34x_smbus_read(struct device *dev, unsigned char reg)
 {
 	struct i2c_client *client = to_i2c_client(dev);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	return i2c_smbus_read_byte_data(client, reg);
 }
 
@@ -26,7 +29,9 @@ static int adxl34x_smbus_write(struct device *dev,
 			       unsigned char reg, unsigned char val)
 {
 	struct i2c_client *client = to_i2c_client(dev);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	return i2c_smbus_write_byte_data(client, reg, val);
 }
 
@@ -35,7 +40,9 @@ static int adxl34x_smbus_read_block(struct device *dev,
 				    void *buf)
 {
 	struct i2c_client *client = to_i2c_client(dev);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	return i2c_smbus_read_i2c_block_data(client, reg, count, buf);
 }
 
@@ -45,7 +52,9 @@ static int adxl34x_i2c_read_block(struct device *dev,
 {
 	struct i2c_client *client = to_i2c_client(dev);
 	int ret;
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	ret = i2c_master_send(client, &reg, 1);
 	if (ret < 0)
 		return ret;
@@ -79,7 +88,9 @@ static int adxl34x_i2c_probe(struct i2c_client *client,
 {
 	struct adxl34x *ac;
 	int error;
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	error = i2c_check_functionality(client->adapter,
 			I2C_FUNC_SMBUS_BYTE_DATA);
 	if (!error) {
@@ -95,7 +106,9 @@ static int adxl34x_i2c_probe(struct i2c_client *client,
 		return PTR_ERR(ac);
 
 	i2c_set_clientdata(client, ac);
-
+#ifdef KM_DEBUG
+	printk("%s %s %d", __FILE__, __func__, __LINE__);
+#endif
 	return 0;
 }
 
